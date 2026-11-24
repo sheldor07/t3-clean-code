@@ -2600,8 +2600,8 @@ export const stageDesktopDmgBackground = Effect.fn("stageDesktopDmgBackground")(
   }
 
   for (const output of [
-    { suffix: "", width: 640, height: 432 },
-    { suffix: "@2x", width: 1280, height: 864 },
+    { suffix: "", width: 640, height: 512 },
+    { suffix: "@2x", width: 1280, height: 1024 },
   ] as const) {
     const targetPath = path.join(
       stageResourcesDir,
@@ -2958,8 +2958,8 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       background: `dmg/dmg-background-${updateChannel}.png`,
       window: {
         width: 640,
-        // DMG bounds include Finder's 32px title bar; keep that artwork strip clear.
-        height: 432,
+        // Taller than upstream so the first-launch note clears the strip Finder's toolbar covers.
+        height: 512,
       },
       contents: [
         { x: 166, y: 214, type: "file" },
