@@ -4,7 +4,30 @@
   </a>
 </p>
 
-<h1 align="center">T3 Code</h1>
+<h1 align="center">T3 Clean Code</h1>
+
+> **Unofficial fork.** T3 Clean Code is based on the [T3 Code](https://github.com/pingdotgg/t3code)
+> source code. It is not affiliated with, endorsed by, or maintained by T3 Tools, Inc.
+> "T3 Code" and "T3 Connect" are their trademarks; see [TRADEMARK.md](./TRADEMARK.md).
+
+## What this fork removes
+
+- **Product analytics.** No usage events are sent to `ingest.t3.codes` or PostHog. The analytics
+  service is a no-op with no HTTP client, and no setting or environment variable turns it on.
+- **Account fingerprinting.** The server no longer reads `~/.codex/auth.json` or `~/.claude.json`
+  to derive an identity, and clients no longer attach hashed T3 Connect account or device ids
+  when they connect.
+- **Relay connection traces.** Nothing is exported to Axiom from the server, desktop, browser or
+  mobile app.
+- **Mobile crash and startup reports.** Always off; the setting is hidden.
+- **Google favicon lookups.** Site hostnames are no longer sent to Google's favicon service.
+- **Agent feedback uploads.** Reports are still saved on your machine, but never sent.
+
+See [docs/user/telemetry.md](./docs/user/telemetry.md) for what still leaves your machine.
+
+The rest of this README is the upstream text.
+
+---
 
 <p align="center">The open-source control plane for coding agents.</p>
 
