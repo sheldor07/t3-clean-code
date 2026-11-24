@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import cleanCodeTileUrl from "../brand/clean-code-tile.png";
+import { CleanCodeLockup } from "../brand/CleanCodeLockup";
 
 export function StandalonePage({ children }: { readonly children: ReactNode }) {
   return (
@@ -24,10 +24,8 @@ export function StandalonePageHeader({
     <>
       <div className="flex items-baseline justify-between gap-3 text-muted-foreground">
         {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product name */}
-        <span className="flex items-center gap-2" role="img" aria-label="T3 Clean Code">
-          <img alt="" className="size-6 shrink-0" draggable={false} src={cleanCodeTileUrl} />
-          {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product wordmark */}
-          <span className="text-xl font-bold tracking-tighter text-foreground">clean code</span>
+        <span className="flex" role="img" aria-label="T3 Clean Code">
+          <CleanCodeLockup className="h-7 text-foreground" />
         </span>
         {context ? <span className="text-sm">{context}</span> : null}
       </div>

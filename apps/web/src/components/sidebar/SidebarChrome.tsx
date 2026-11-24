@@ -15,7 +15,7 @@ import {
 import { primaryServerKeybindingsAtom } from "../../state/server";
 import { cn } from "../../lib/utils";
 import { useIssuesSupported, usePullRequestsSupported } from "../../state/environments";
-import cleanCodeTileUrl from "../brand/clean-code-tile.png";
+import { CleanCodeLockup } from "../brand/CleanCodeLockup";
 import {
   resolveEnvironmentIdentificationPillLabel,
   resolveSidebarStageBackdropVariant,
@@ -184,15 +184,7 @@ function SidebarBrand({ onBackdrop }: { onBackdrop: boolean }) {
 }
 
 function SidebarBrandMark({ onBackdrop }: { onBackdrop: boolean }) {
-  return (
-    <span className="inline-flex min-w-0 items-center gap-1.5 text-base font-bold tracking-tighter">
-      <img alt="" className="size-[18px] shrink-0" draggable={false} src={cleanCodeTileUrl} />
-      <span className={cn("truncate", onBackdrop ? "text-white" : "text-foreground")}>
-        {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product wordmark */}
-        {"clean code"}
-      </span>
-    </span>
-  );
+  return <CleanCodeLockup className={cn("h-5", onBackdrop ? "text-white" : "text-foreground")} />;
 }
 
 function SidebarUtilityItem({
