@@ -1,6 +1,6 @@
 # Brand icons
 
-> **T3 Clean Code:** the PNG and ICO files in `prod/`, `nightly/` and `dev/` are the Crator icon,
+> **T3 Clean Code:** the PNG and ICO files in `prod/`, `nightly/` and `dev/` are the flat Crator icon,
 > the same one for all three variants. They keep upstream's file names so the build needs no
 > changes. The `app-icon.icon` Icon Composer projects are still upstream's and are not used by the
 > desktop build; do not run `vp run icons:export`, which would overwrite these icons with
