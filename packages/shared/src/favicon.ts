@@ -78,7 +78,10 @@ export function faviconUrlForOrigin(rawUrl: string | null | undefined, size = 32
     if (!url.hostname) return null;
     if (url.protocol !== "http:" && url.protocol !== "https:") return null;
     if (!isPublicFaviconHost(url.hostname)) return null;
-    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(url.hostname)}&sz=${size}`;
+    // T3 Clean Code: upstream asked Google's favicon service for every site's icon, which told
+    // Google each hostname you opened. No third-party lookup here; callers show their fallback.
+    void size;
+    return null;
   } catch {
     return null;
   }

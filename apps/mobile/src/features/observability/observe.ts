@@ -5,7 +5,10 @@ import { Observe } from "expo-observe";
 const relayUrl: unknown = Constants.expoConfig?.extra?.relay?.url;
 const appVariant: unknown = Constants.expoConfig?.extra?.appVariant;
 
-export const crashReportingAvailable = typeof relayUrl === "string" && relayUrl.trim() !== "";
+// T3 Clean Code: crash and startup reports are never sent, so the setting is hidden and
+// Observe is always configured with dispatching off.
+void relayUrl;
+export const crashReportingAvailable: boolean = false;
 
 interface PromiseRejectionTracker {
   readonly enablePromiseRejectionTracker?: (options: {
