@@ -1,23 +1,11 @@
 import type { SVGProps } from "react";
 
-/** T3 Clean Code's own mark: a prompt chevron and two sparkles. The name is upstream's. */
+/** The Crator mark, which T3 Clean Code uses as its own. The component name is upstream's. */
 export function T3Wordmark(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} viewBox="226 224 654 560" xmlns="http://www.w3.org/2000/svg">
+    <svg {...props} viewBox="1.82 1.82 21.01 21.01" xmlns="http://www.w3.org/2000/svg">
       <path
-        d="M286 318 L518 512 L286 706"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="104"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M700 232 C712 352 752 392 872 404 C752 416 712 456 700 576 C688 456 648 416 528 404 C648 392 688 352 700 232Z"
-        fill="currentColor"
-      />
-      <path
-        d="M772 604 C778 664 798 684 858 690 C798 696 778 716 772 776 C766 716 746 696 686 690 C746 684 766 664 772 604Z"
+        d="M19.0342 20.2256C19.0342 21.6609 17.8708 22.8249 16.4355 22.8252H8.50781C7.07231 22.8252 5.9082 21.6611 5.9082 20.2256V18.8896H19.0342V20.2256ZM5.9082 18.8896H4.42285C2.98745 18.8896 1.82427 17.7264 1.82422 16.291V8.36328C1.82422 6.92783 2.98742 5.76375 4.42285 5.76367H5.9082V18.8896ZM20.2256 5.76367C21.6611 5.76367 22.8252 6.92778 22.8252 8.36328V16.291C22.8251 17.7265 21.6611 18.8896 20.2256 18.8896H19.0342V5.76367H20.2256ZM16.4355 1.82324C17.8708 1.82349 19.0341 2.98657 19.0342 4.42188V5.76367H5.9082V4.42188C5.90825 2.98641 7.07234 1.82324 8.50781 1.82324H16.4355Z"
         fill="currentColor"
       />
     </svg>
