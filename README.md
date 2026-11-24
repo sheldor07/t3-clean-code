@@ -44,13 +44,14 @@ T3 Clean Code runs the coding agents on your machine and gives them one fast int
 
 Download an installer from [Releases](https://github.com/sheldor07/t3-clean-code/releases).
 
-| Platform             | File                                      |
-| -------------------- | ----------------------------------------- |
-| macOS, Apple silicon | `T3-Clean-Code-<version>-arm64.dmg`       |
-| macOS, Intel         | `T3-Clean-Code-<version>-x64.dmg`         |
-| Linux, x64           | `T3-Clean-Code-<version>-x86_64.AppImage` |
+| Platform             | File                                |
+| -------------------- | ----------------------------------- |
+| macOS, Apple silicon | `T3-Clean-Code-<version>-arm64.dmg` |
+| macOS, Intel         | `T3-Clean-Code-<version>-x64.dmg`   |
+| Linux, x64           | `T3-Clean-Code-x86_64.AppImage`     |
+| Debian, Ubuntu, x64  | `T3-Clean-Code-<version>-amd64.deb` |
 
-The installers are not code-signed.
+The installers are not code-signed, so the macOS app may not be able to update itself; if it cannot, download new versions from Releases.
 
 - **macOS:** drag the app to Applications, then run this once before opening it:
 
