@@ -22,11 +22,8 @@ function pairArchitectures(
   x64: ReadonlyMap<string, string>,
 ): ReadonlyArray<{ readonly channel: string; readonly arm64: string; readonly x64: string }> {
   const channels = new Set([...arm64.keys(), ...x64.keys()]);
-  if (channels.size === 0) {
-    throw new Error(
-      `Incomplete ${platformLabel} updater manifests: no architecture manifests found.`,
-    );
-  }
+  // T3 Clean Code publishes no Windows build, so a platform with no manifests is skipped.
+  if (channels.size === 0) return [];
   return [...channels].toSorted().map((channel) => {
     const arm64Manifest = arm64.get(channel);
     const x64Manifest = x64.get(channel);
