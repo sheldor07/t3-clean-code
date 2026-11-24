@@ -109,13 +109,30 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
           T3CODE_DESKTOP_REUSE_RESOURCE_MONITOR: true
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
         run: |
-          vp run dist:desktop:artifact \
-            --platform "${{ matrix.platform }}" \
-            --target "${{ matrix.target }}" \
-            --arch "${{ matrix.arch }}" \
-            --build-version "$VERSION" \
+          args=(
+            --platform "${{ matrix.platform }}"
+            --target "${{ matrix.target }}"
+            --arch "${{ matrix.arch }}"
+            --build-version "$VERSION"
             --verbose
+          )
+          # macOS builds are signed and notarized when all five Apple secrets are set.
+          if [[ "${{ matrix.platform }}" == "mac" && -n "$CSC_LINK" && -n "$CSC_KEY_PASSWORD" && -n "$APPLE_API_KEY" && -n "$APPLE_API_KEY_ID" && -n "$APPLE_API_ISSUER" ]]; then
+            key_path="$RUNNER_TEMP/AuthKey_${APPLE_API_KEY_ID}.p8"
+            printf '%s' "$APPLE_API_KEY" > "$key_path"
+            export APPLE_API_KEY="$key_path"
+            echo "macOS signing enabled."
+            args+=(--signed)
+          else
+            echo "Building unsigned."
+          fi
+          vp run dist:desktop:artifact "${args[@]}"
 
       - name: Collect release assets
         shell: bash

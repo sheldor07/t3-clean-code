@@ -1357,6 +1357,29 @@ export function resolveMacWebAuthnEntitlements(
   };
 }
 
+/** Hardened-runtime entitlements for a signed build with no passkey sign-in. */
+export function renderMacBasicEntitlements(): string {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <true/>
+    <key>com.apple.security.cs.disable-library-validation</key>
+    <true/>
+    <key>com.apple.security.automation.apple-events</key>
+    <true/>
+    <key>com.apple.security.device.camera</key>
+    <true/>
+    <key>com.apple.security.device.audio-input</key>
+    <true/>
+  </dict>
+</plist>
+`;
+}
+
 export function renderMacPasskeyEntitlements(
   configuration: MacPasskeySigningConfiguration,
   webAuthn: MacWebAuthnEntitlements,
@@ -2813,7 +2836,7 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
   macPasskeySigning:
     | {
         readonly entitlementsPath: string;
-        readonly provisioningProfilePath: string;
+        readonly provisioningProfilePath?: string;
       }
     | undefined,
   wslRuntimeBundled = false,
@@ -2920,7 +2943,9 @@ export const createBuildConfig = Effect.fn("createBuildConfig")(function* (
       ...(macPasskeySigning
         ? {
             entitlements: macPasskeySigning.entitlementsPath,
-            provisioningProfile: macPasskeySigning.provisioningProfilePath,
+            ...(macPasskeySigning.provisioningProfilePath
+              ? { provisioningProfile: macPasskeySigning.provisioningProfilePath }
+              : { entitlementsInherit: macPasskeySigning.entitlementsPath }),
           }
         : {}),
     };
@@ -3902,8 +3927,12 @@ const buildDesktopArtifactUnlocked = Effect.fn("buildDesktopArtifactUnlocked")(f
   const stageProdResourcesDir = path.join(stageAppDir, "apps/desktop/prod-resources");
   yield* fs.copy(stageResourcesDir, stageProdResourcesDir);
 
+  // T3 Clean Code has no T3 Connect sign-in, so a signed build needs no passkey entitlements.
+  // They are configured only when a provisioning profile is supplied.
+  const hasMacProvisioningProfile =
+    (loadRepoEnv({ repoRoot }).T3CODE_MACOS_PROVISIONING_PROFILE?.trim() ?? "") !== "";
   const configuredMacPasskeySigning =
-    options.platform === "mac" && options.signed
+    options.platform === "mac" && options.signed && hasMacProvisioningProfile
       ? yield* Effect.try({
           try: () => resolveMacPasskeySigningConfiguration(loadRepoEnv({ repoRoot })),
           catch: MacPasskeySigningConfigurationResolutionError.fromCause,
@@ -3939,6 +3968,14 @@ const buildDesktopArtifactUnlocked = Effect.fn("buildDesktopArtifactUnlocked")(f
       macEntitlementsPath,
       renderMacPasskeyEntitlements(macPasskeySigning, macWebAuthn),
     );
+  }
+
+  const macBasicEntitlementsPath =
+    options.platform === "mac" && options.signed && !macPasskeySigning
+      ? path.join(stageAppDir, "entitlements.mac.plist")
+      : undefined;
+  if (macBasicEntitlementsPath) {
+    yield* fs.writeFileString(macBasicEntitlementsPath, renderMacBasicEntitlements());
   }
 
   const stageDependencies =
@@ -3981,12 +4018,14 @@ const buildDesktopArtifactUnlocked = Effect.fn("buildDesktopArtifactUnlocked")(f
       options.signed,
       options.mockUpdates,
       options.mockUpdateServerPort,
-      macPasskeySigning && macEntitlementsPath
-        ? {
-            entitlementsPath: macEntitlementsPath,
-            provisioningProfilePath: macPasskeySigning.provisioningProfilePath,
-          }
-        : undefined,
+      macBasicEntitlementsPath
+        ? { entitlementsPath: macBasicEntitlementsPath }
+        : macPasskeySigning && macEntitlementsPath
+          ? {
+              entitlementsPath: macEntitlementsPath,
+              provisioningProfilePath: macPasskeySigning.provisioningProfilePath,
+            }
+          : undefined,
       bundlesWslRuntime({ platform: options.platform, runtimeArchivePath: options.wslRuntime }),
       options.arch,
     ),
