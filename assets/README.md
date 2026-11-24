@@ -1,10 +1,10 @@
 # Brand icons
 
-> **T3 Clean Code:** the PNG and ICO files in `prod/`, `nightly/` and `dev/` are this fork's own
-> icon, rendered from each folder's `icon-source.svg`. They keep upstream's file names so the
-> build needs no changes. The `app-icon.icon` Icon Composer projects are still upstream's and are
-> not used by the desktop build; do not run `vp run icons:export`, which would overwrite the
-> fork's icons with upstream's. The rest of this page is upstream's.
+> **T3 Clean Code:** the PNG and ICO files in `prod/`, `nightly/` and `dev/` are the Crator icon,
+> the same one for all three variants. They keep upstream's file names so the build needs no
+> changes. The `app-icon.icon` Icon Composer projects are still upstream's and are not used by the
+> desktop build; do not run `vp run icons:export`, which would overwrite these icons with
+> upstream's. The rest of this page is upstream's.
 
 The three Icon Composer projects are the source of truth for full application icons:
 
