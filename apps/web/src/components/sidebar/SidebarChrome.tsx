@@ -15,7 +15,7 @@ import {
 import { primaryServerKeybindingsAtom } from "../../state/server";
 import { cn } from "../../lib/utils";
 import { useIssuesSupported, usePullRequestsSupported } from "../../state/environments";
-import { T3Wordmark } from "../T3Wordmark";
+import cleanCodeTileUrl from "../brand/clean-code-tile.png";
 import {
   resolveEnvironmentIdentificationPillLabel,
   resolveSidebarStageBackdropVariant,
@@ -185,16 +185,11 @@ function SidebarBrand({ onBackdrop }: { onBackdrop: boolean }) {
 
 function SidebarBrandMark({ onBackdrop }: { onBackdrop: boolean }) {
   return (
-    <span className="inline-flex min-w-0 items-baseline gap-1 text-sm font-medium tracking-tight">
-      <T3Wordmark aria-label="T3 Clean Code mark" className="h-[1cap] w-auto shrink-0" />
-      <span
-        className={cn(
-          "truncate [text-box:trim-both_cap_alphabetic] supports-[text-box:trim-both_cap_alphabetic]:py-1",
-          onBackdrop ? "text-white/70" : "text-muted-foreground",
-        )}
-      >
+    <span className="inline-flex min-w-0 items-center gap-1.5 text-base font-bold tracking-tighter">
+      <img alt="" className="size-[18px] shrink-0" draggable={false} src={cleanCodeTileUrl} />
+      <span className={cn("truncate", onBackdrop ? "text-white" : "text-foreground")}>
         {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product wordmark */}
-        {"Clean Code"}
+        {"clean code"}
       </span>
     </span>
   );
