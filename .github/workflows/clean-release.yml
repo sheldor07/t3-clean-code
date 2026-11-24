@@ -29,7 +29,7 @@ jobs:
       matrix:
         include:
           - label: macOS arm64
-            runner: macos-latest
+            runner: macos-26
             platform: mac
             target: dmg
             arch: arm64
@@ -72,6 +72,15 @@ jobs:
           if [[ "$(uname -m)" == "arm64" ]] && ! /usr/bin/arch -x86_64 /usr/bin/true; then
             sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
           fi
+
+      # The Apple Speech helper needs the macOS 26 SDK.
+      - name: Select Xcode 26
+        if: matrix.platform == 'mac'
+        shell: bash
+        run: |
+          xcode="$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1 || true)"
+          if [[ -n "$xcode" ]]; then sudo xcode-select -s "$xcode"; fi
+          xcodebuild -version
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
